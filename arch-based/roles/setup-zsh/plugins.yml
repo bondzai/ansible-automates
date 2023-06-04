@@ -1,0 +1,7 @@
+---
+- name: Install zsh-syntax-highlighting and zsh-autosuggestions plugins
+  become_user: "{{ username }}"
+  shell: |
+    source "$HOME/.zshrc"
+    add_plugin () {
+        git clone https://github.com/zsh-users

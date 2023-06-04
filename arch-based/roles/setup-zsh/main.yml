@@ -1,0 +1,44 @@
+---
+- name: Uninstall zsh
+  become: yes
+  shell: sudo pacman --noconfirm -Rnc zsh
+
+- name: Install zsh and git
+  become: yes
+  pacman:
+    name: 
+      - zsh
+      - git
+    state: present
+
+- name: Remove .zshrc and .oh-my-zsh directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "$HOME/.zshrc"
+    - "$HOME/.oh-my-zsh"
+
+- name: Remove /etc/zsh directory
+  become: yes
+  file:
+    path: "/etc/zsh"
+    state: absent
+
+- name: Install Oh My Zsh
+  become: yes
+  shell: sh -c "$(curl -fsSL raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+- name: Install gnome-terminal-transparency using yay
+  become_user: "{{ username }}"
+  shell: yay -S --noconfirm gnome-terminal-transparency
+
+- name: Load environment variables
+  shell: source .env
+  args:
+    chdir: "{{ playbook_dir }}"
+  changed_when: false
+
+- name: Add zsh-syntax-highlighting and zsh-autosuggestions plugins
+  become_user: "{{ username }}"
+  include_tasks: plugins.yml

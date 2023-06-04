@@ -1,0 +1,10 @@
+---
+- name: Install snapd using yay
+  become_user: "{{ username }}"
+  shell: yay -S --noconfirm snapd
+
+- name: Enable and start snapd service
+  systemd:
+    name: snapd.service
+    enabled: yes
+    state: started

@@ -1,0 +1,9 @@
+---
+- name: Install yay
+  become_user: "{{ username }}"
+  shell: |
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si --noconfirm
+  args:
+    executable: /bin/bash

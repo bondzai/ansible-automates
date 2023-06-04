@@ -1,0 +1,5 @@
+---
+- name: Install arch keyring
+  pacman:
+    name: archlinux-keyring
+    state: present
